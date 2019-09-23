@@ -40,9 +40,11 @@ class Board extends Component {
         return (
             <div className={classes.root}>
                 <GridList cellHeight={60}
-                          className={classes.gridList} cols={6}>
+                          className={classes.gridList}
+                          cols={6}>
                     {items.map((item, index) => (
-                        <GridListTile key={`${item.value}-${index}`} cols={1}>
+                        <GridListTile key={`${item.value}-${index}`}
+                                      cols={1}>
                             <Button variant="contained"
                                     color={`${item.isHighlighted ? 'primary' : 'secondary' }`}
                                     onClick={() => onSelect(index)}>

@@ -37,7 +37,6 @@ class Game extends Component {
                     <Button variant="contained" color="primary" onClick={startGame}>
                         Start game
                     </Button>
-
                     <div className="board">
                         { isGameStarted && <Board items={items} onSelect={handleSelect}/> }
                     </div>
