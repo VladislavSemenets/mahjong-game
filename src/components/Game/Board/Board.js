@@ -1,27 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles } from '@material-ui/core/styles';
-
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-
 import Button from '@material-ui/core/Button';
 
-const materialStyles = theme => ({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        overflow: 'hidden',
-        backgroundColor: theme.palette.background.paper,
-        marginTop: '15px'
-    },
-    gridList: {
-        width: 500,
-        height: 450,
-    }
-});
+import './Board.css';
 
 class Board extends Component {
     static propTypes = {
@@ -30,32 +12,33 @@ class Board extends Component {
     };
 
     render() {
-        const {
-            classes,
-            items
-        } = this.props;
-
+        const { items, isTwoItemsSelected } = this.props;
         const { onSelect } = this.props;
 
         return (
-            <div className={classes.root}>
-                <GridList cellHeight={60}
-                          className={classes.gridList}
-                          cols={6}>
-                    {items.map((item, index) => (
-                        <GridListTile key={`${item.value}-${index}`}
-                                      cols={1}>
-                            <Button variant="contained"
-                                    color={`${item.isHighlighted ? 'primary' : 'secondary' }`}
-                                    onClick={() => !item.isHighlighted && onSelect(index)}>
-                                {item.isSelected || item.isHighlighted ? item.value : '#'}
-                            </Button>
-                        </GridListTile>
-                    ))}
-                </GridList>
-            </div>
+            <React.Fragment>
+             {items.map((subItems, subIndex) => (
+                 <div className="board row" role="rowgroup" key={subIndex}>
+                     <React.Fragment>
+                         {subItems.map((item, index) => (
+                             <div className="flex-row"
+                                  style={{width: `calc(100% / ${subItems.length})`}}
+                                  role="cell"
+                                  key={`${item.value}-${index}`}>
+                                 <Button variant="contained"
+                                         disabled={isTwoItemsSelected || item.isSelected}
+                                         color={`${item.isHighlighted ? 'primary' : 'secondary' }`}
+                                         onClick={() => !item.isHighlighted && onSelect(subIndex, index)}>
+                                     {item.isSelected || item.isHighlighted ? item.value : '#'}
+                                 </Button>
+                             </div>
+                         ))}
+                     </React.Fragment>
+                 </div>
+             ))}
+            </React.Fragment>
         );
     }
 }
 
-export default withStyles(materialStyles)(Board);
+export default Board;

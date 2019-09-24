@@ -2,8 +2,7 @@ export const START_GAME = 'START_GAME';
 export const SELECT_ITEM = 'SELECT_ITEM';
 export const COMPARE_SELECTED = 'COMPARE_SELECTED';
 
-const MAX_NUMBER = 99;
-const MIN_NUMBER = 1;
+const GAME_SIZE = 5;
 
 export function startGame() {
     return {
@@ -12,11 +11,11 @@ export function startGame() {
     };
 }
 
-export function handleSelect(id) {
+export function handleSelect(parentId, id) {
     return async (dispatch) => {
-        dispatch(selectItem(id));
+        dispatch(selectItem(parentId, id));
 
-        setTimeout(() => dispatch(checkSelected()), 1000);
+        setTimeout(() => dispatch(checkSelected()), 1100);
     };
 }
 
@@ -27,27 +26,45 @@ function checkSelected() {
     };
 }
 
-function selectItem(id: number) {
+function selectItem(parentId, id) {
     return {
         type: SELECT_ITEM,
-        payload: { id }
+        payload: { parentId, id }
     };
 }
 
 function generateItems() {
-    return Array.from(
-        Array(18),
-        () => Math.floor(Math.random() * (MAX_NUMBER - MIN_NUMBER)) + MIN_NUMBER
-    ).reduce(
-        (items, rawItem) => {
-            const item = {
-                value: rawItem,
-                isSelected: false,
-                isHighlighted: false
-            };
+    const source = Array
+        .from(
+            { length: 99 },
+            (value, key) => key + 1
+        ).sort(() => Math.random() - 0.5);
+    const items = source
+        .splice(0, GAME_SIZE)
+        .reduce(
+            (items, rawItem) => {
+                const item = {
+                    value: rawItem,
+                    isSelected: false,
+                    isHighlighted: false
+                };
 
-            return items.concat(item, item);
-        },
-        []
-    ).sort(() => 0.5 - Math.random());
+                return items.concat(item, item);
+            },
+            []
+        )
+        .sort(() => Math.random() - 0.5);
+
+    return chunkArray(items, 6);
+}
+
+function chunkArray(array, size){
+    const arrayLength = array.length;
+    const tempArray = [];
+
+    for (let index = 0; index < arrayLength; index += size) {
+        tempArray.push(array.slice(index, index + size));
+    }
+
+    return tempArray;
 }
