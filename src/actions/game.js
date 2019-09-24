@@ -15,7 +15,7 @@ export function handleSelect(parentId, id) {
     return async (dispatch) => {
         dispatch(selectItem(parentId, id));
 
-        setTimeout(() => dispatch(checkSelected()), 1100);
+        setTimeout(() => dispatch(checkSelected()), 1000);
     };
 }
 
