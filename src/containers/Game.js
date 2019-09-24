@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 
 import Game from '../components/Game/Game';
 import * as BuildActions from '../actions/game';
+import { highlightedItemsSelector } from '../selectors/game';
 
 function mapStateToProps(state) {
     return {
         isGameStarted: state.game.isGameStarted,
         items: state.game.items,
+        highlightedItems: highlightedItemsSelector(state)
     };
 }
 

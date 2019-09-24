@@ -47,7 +47,7 @@ class Board extends Component {
                                       cols={1}>
                             <Button variant="contained"
                                     color={`${item.isHighlighted ? 'primary' : 'secondary' }`}
-                                    onClick={() => onSelect(index)}>
+                                    onClick={() => !item.isHighlighted && onSelect(index)}>
                                 {item.isSelected || item.isHighlighted ? item.value : '#'}
                             </Button>
                         </GridListTile>
